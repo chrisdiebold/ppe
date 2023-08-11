@@ -1,9 +1,11 @@
 package todo
 
 import (
+	"fmt"
 	"time"
 )
 
+// Todolist is a slice that represents a todo list
 type TodoList []todo
 
 type todo struct {
@@ -15,8 +17,6 @@ type todo struct {
 	CompletedOn time.Time
 }
 
-// primes := [6]int{2, 3, 5, 7, 11, 13} // This is how to define an array
-// primes := []int{2, 3, 5, 7, 11, 13} // slice
 func (l *TodoList) Add(task string, desc string) {
 
 	todoItem := todo{
@@ -28,27 +28,39 @@ func (l *TodoList) Add(task string, desc string) {
 		CompletedOn: time.Time{},
 	}
 	*l = append(*l, todoItem)
+
 }
 
 // Adjust for 1 based lists: *l = append(ls[:i-1], ls[i:]...)
 // TODO: Complete(int)
-func (l *TodoList) Complete(itemOrder int) {
+func (l *TodoList) Complete(item int) error {
+	ls := *l
 
-	if itemOrder > 0 {
-		itemOrder--
+	if item <= 0 || item > len(ls) {
+		return fmt.Errorf("item %d does not exist", item)
 	}
-	for i := 0; i < len(*l); i++ {
 
-		if i == itemOrder {
-			todoItem := *l[i]
-			todoItem.Completed = true
-			todoItem.CompletedOn = time.Now()
-		}
-	}
+	ls[item-1].Completed = true
+	ls[item-1].CompletedOn = time.Now()
+
+	return nil
 }
 
-// TODO: Delete
-// TODO: GET - print the whole list.
+// Delete removes the numbered element from the todo list
+// If the list is empty or the user get an item out of bounds will give an error
+func (l *TodoList) Delete(i int) error {
+	ls := *l
+
+	if i <= 0 || i > len(ls) {
+		return fmt.Errorf("item %d does not exist", i)
+	}
+
+	*l = append(ls[:i-1], ls[i:]...)
+
+	return nil
+}
+
+// TODO: GET(item int) // Get the Todo Item.
 
 func NewTodo(name, description string) *todo {
 	return &todo{
