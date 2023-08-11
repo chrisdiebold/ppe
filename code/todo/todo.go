@@ -61,6 +61,15 @@ func (l *TodoList) Delete(i int) error {
 }
 
 // TODO: GET(item int) // Get the Todo Item.
+func (l * TodoList) Get(i int) (*todo, error) {
+	ls := *l
+
+	if i <= 0 || i > len(ls) {
+		return nil, fmt.Errorf("item %d does not exist", i)
+	}
+
+	return &ls[i-1], nil
+}
 
 func NewTodo(name, description string) *todo {
 	return &todo{

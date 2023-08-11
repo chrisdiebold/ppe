@@ -54,7 +54,25 @@ func TestComplete(t *testing.T) {
 	if list[0].Completed != true {
 		t.Error("Expected true, got false instead")
 	}
+}
 
+func TestGet(t* testing.T) {
+	t.Parallel()
+
+	list := todo.TodoList{}
+	list.Add("Learn Go", "understand interfaces")
+	list.Add("Learn Go 2", "understand interfaces")
+
+	_, err := list.Get(10)
+	if err == nil {
+		t.Error("Expected an error, did not get one instead")
+	}
+
+	firstItem, _ := list.Get(1)
+
+	if firstItem.Name != "Learn Go" {
+		t.Errorf("Expected %s, got %s instead", list[0].Name, firstItem.Name)
+	} 
 }
 
 func TestDelete(t *testing.T) {
