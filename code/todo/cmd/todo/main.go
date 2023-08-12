@@ -7,9 +7,9 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func (todo *Todo) getName() {
-	return todo.name
-}
+// func (todo *Todo) getName() {
+// 	return todo.name
+// }
 
 func main() {
 	db, err := sql.Open("sqlite", "todos.db")
@@ -17,8 +17,8 @@ func main() {
 		panic("Could not connect to the database")
 	}
 
-	ping := db.Ping()
-	if ping == nil {
+	pingError := db.Ping()
+	if pingError == nil {
 		fmt.Println("it works!")
 		// do not forget to remove all tables from db prior to staring....
 		// TODO: Create the db scheme
@@ -30,7 +30,6 @@ func main() {
 		// TODO: updating a todo name
 
 		// TODO: stretch put all of this in a seed.go file and use it in main.
-
 	}
 
 }
