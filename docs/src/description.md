@@ -58,5 +58,6 @@ The initial plan is to design and build these are stand-alone apps. We will desi
 # Tools
 - [Mermaid](https://mermaid.js.org) for all diagramming 
 - [MDBook](https://github.com/rust-lang/mdBook) for the notes and planning. I have already integrated Mermaid into MDbook. 
+  - To run mdbook, run this command from the docs folder: mdbook serve
 - Programming Languages??
   - I am really torn between Rust and Go. I will let you convince me. 
