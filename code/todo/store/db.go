@@ -73,13 +73,7 @@ func AddTodo(db *sql.DB, todoItem *todo.Todo) (int64, error) {
 			createdOn,
 			completedOn
 		)
-		values(
-			?,
-			?,
-			?,
-			?,
-			?
-		);
+		values(?, ?, ?, ?, ?);
 	`
 	result, err := db.Exec(query, todoItem.Name, todoItem.Description,
 		todoItem.Completed, todoItem.CreatedOn, todoItem.CompletedOn)
