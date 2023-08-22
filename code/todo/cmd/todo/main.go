@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/chrisdiebold/todo/store"
 	_ "modernc.org/sqlite"
 )
 
@@ -25,12 +26,16 @@ func main() {
 		// TODO: Insert 4 todos in the db as a transaction
 		// TODO: Query those todos and dump them to the console
 		// TODO: In todo model create method for:
-		// TODO: completing a todo 
+		// TODO: completing a todo
 		// TODO: deleting a todo
 		// TODO: updating a todo name
 
 		// TODO: stretch put all of this in a seed.go file and use it in main.
 	}
+
+	store.SeedDatabase(db)
+
+	store.ConstructTodoList(db)
 
 }
 

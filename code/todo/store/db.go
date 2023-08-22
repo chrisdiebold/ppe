@@ -12,7 +12,7 @@ func GetDbConnection(url string) (*sql.DB, error) {
 	db, err := sql.Open("sqlite", url)
 
 	if err != nil {
-		return nil, fmt.Errorf("Could not establish connection to %s", url)
+		return nil, fmt.Errorf("could not establish connection to %s", url)
 	}
 
 	return db, nil
@@ -84,7 +84,7 @@ func AddTodo(db *sql.DB, todoItem *todo.Todo) (int64, error) {
 	return rowsAffected, err
 }
 
-func DeleteTodo(db *sql.DB, id int) (error) {
+func DeleteTodo(db *sql.DB, id int) error {
 	query := `
 		DELETE FROM todos WHERE id = ?;
 	`
@@ -100,22 +100,60 @@ func DeleteTodo(db *sql.DB, id int) (error) {
 	return nil
 }
 
-func GetTodo(db *sql.DB, id int) (*todo.Todo, error) {
+func ConstructTodoList(db *sql.DB) {
 	query := `
 		SELECT id, name, description, completed, createdOn, CompletedOn
-		FROM todos WHERE id = ?;
+		FROM todos;
 	`
-	rows, err := db.Query(query, id)
-	
-	if err != nil {
-		return nil, err
-	}
-	todo := todo.Todo{}
+	if rows, err := db.Query(query); err != nil {
+		l := todo.TodoList{}
+		var t todo.Todo
+		for rows.Scan(&t) {
+			l.Add(t)
+		}
 
-	getTodoErr :=  rows.Scan(&todo.Id, &todo.Name, &todo.Completed, &todo.CompletedOn)
-	if getTodoErr != nil {
-		return nil, getTodoErr
+		for _, todo := range l {
+			fmt.Println(todo.Name)
+		}
 	}
 
-	return &todo, nil
 }
+
+// func GetTodo(db *sql.DB, id int) (*todo.Todo, error) {
+// 	query := `
+// 		SELECT id, name, description, completed, createdOn, CompletedOn
+// 		FROM todos WHERE id = ?;
+// 	`
+// 	rows, err := db.Query(query, id)
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	if len(rows) == 0 {
+// 		// err
+// 	}
+
+// 	// construct todolist
+
+// 	// getTodoErr := rows.Scan(rows)
+
+// 	// todoItem, mapErr := mapQueryToTodo(rows)
+
+// 	// if mapErr != nil {
+// 	// 	return nil, getTodoErr
+// 	// }
+
+// 	// return &todoItem, nil
+// }
+
+// func mapQueryToTodo(rows *sql.Rows) (*todo.Todo, error) todo.TodoList {
+// 	newTodo := todo.Todo{}
+// 	todoList := todo.TodoList{}
+// 	for rows.Scan(&newTodo) {
+// 		// add to todolist
+// 	}
+// 	// for rows.Scan(&newTodo) {
+
+// 	// }
+// }
