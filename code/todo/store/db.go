@@ -83,3 +83,39 @@ func AddTodo(db *sql.DB, todoItem *todo.Todo) (int64, error) {
 	rowsAffected, _ := result.RowsAffected()
 	return rowsAffected, err
 }
+
+func DeleteTodo(db *sql.DB, id int) (error) {
+	query := `
+		DELETE FROM todos WHERE id = ?;
+	`
+
+	result, err := db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	rowsAffected, deleteError := result.RowsAffected()
+	if rowsAffected != 1 || deleteError != nil {
+		return deleteError
+	}
+	return nil
+}
+
+func GetTodo(db *sql.DB, id int) (*todo.Todo, error) {
+	query := `
+		SELECT id, name, description, completed, createdOn, CompletedOn
+		FROM todos WHERE id = ?;
+	`
+	rows, err := db.Query(query, id)
+	
+	if err != nil {
+		return nil, err
+	}
+	todo := todo.Todo{}
+
+	getTodoErr :=  rows.Scan(&todo.Id, &todo.Name, &todo.Completed, &todo.CompletedOn)
+	if getTodoErr != nil {
+		return nil, getTodoErr
+	}
+
+	return &todo, nil
+}

@@ -23,9 +23,9 @@ func main() {
 		// do not forget to remove all tables from db prior to staring....
 		// TODO: Create the db scheme
 		// TODO: Insert 4 todos in the db as a transaction
-		// TODO: Query those todos and dump them to the consol
+		// TODO: Query those todos and dump them to the console
 		// TODO: In todo model create method for:
-		// TODO: completing a todo
+		// TODO: completing a todo 
 		// TODO: deleting a todo
 		// TODO: updating a todo name
 

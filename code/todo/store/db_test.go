@@ -9,6 +9,9 @@ import (
 
 var dbUrl = "todos.db"
 
+var testName = "first todo"
+var description = "first Todo description"
+
 func TestGetConnection(t *testing.T) {
 	t.Parallel()
 	db, err := store.GetDbConnection(dbUrl)
@@ -78,5 +81,39 @@ func TestAddTodo(t *testing.T) {
 	if affectedRows != 1 {
 		t.Error("Did not affect expected number of rows")
 	}
+}
 
+func TestDeleteTodo(t *testing.T) {
+	t.Parallel()
+	todoList := todo.TodoList{}
+	todoList.Add(testName, description)
+
+	db, _ := store.GetDbConnection(dbUrl)
+	defer store.CloseConnection(db)
+	store.SetUpTables(db)
+
+	todoItem, _ := todoList.Get(1)
+
+	store.AddTodo(db, todoItem)
+
+	err := store.DeleteTodo(db, 1)
+	if err != nil {
+		t.Error("Could not delete a table that did exist.")
+	}
+}
+
+func TestGetTodo(t *testing.T) {
+	t.Parallel()
+	todoList := todo.TodoList{}
+	todoList.Add(testName, description)
+
+	db, _ := store.GetDbConnection(dbUrl)
+	defer store.CloseConnection(db)
+	store.SetUpTables(db)
+
+	todoItem, _ := todoList.Get(1)
+
+	store.AddTodo(db, todoItem)
+
+	todoItem, err := store.GetTodo(db, 1)
 }
